@@ -98,7 +98,7 @@ const (
 )
 
 // NewEngineFunc creates a new engine.
-type NewEngineFunc func(id uint64, i Index, database, path string, walPath string, sfile *SeriesFile, options EngineOptions) Engine
+type NewEngineFunc func(id uint64, i Index, path string, walPath string, sfile *SeriesFile, options EngineOptions) Engine
 
 // newEngineFuncs is a lookup of engine constructors by name.
 var newEngineFuncs = make(map[string]NewEngineFunc)
@@ -123,10 +123,10 @@ func RegisteredEngines() []string {
 
 // NewEngine returns an instance of an engine based on its format.
 // If the path does not exist then the DefaultFormat is used.
-func NewEngine(id uint64, i Index, database, path string, walPath string, sfile *SeriesFile, options EngineOptions) (Engine, error) {
+func NewEngine(id uint64, i Index, path string, walPath string, sfile *SeriesFile, options EngineOptions) (Engine, error) {
 	// Create a new engine
 	if _, err := os.Stat(path); os.IsNotExist(err) {
-		return newEngineFuncs[options.EngineVersion](id, i, database, path, walPath, sfile, options), nil
+		return newEngineFuncs[options.EngineVersion](id, i, path, walPath, sfile, options), nil
 	}
 
 	// If it's a dir then it's a tsm1 engine
@@ -145,7 +145,7 @@ func NewEngine(id uint64, i Index, database, path string, walPath string, sfile 
 		return nil, fmt.Errorf("invalid engine format: %q", format)
 	}
 
-	return fn(id, i, database, path, walPath, sfile, options), nil
+	return fn(id, i, path, walPath, sfile, options), nil
 }
 
 // EngineOptions represents the options used to initialize the engine.

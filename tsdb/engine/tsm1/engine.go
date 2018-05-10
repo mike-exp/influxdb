@@ -146,7 +146,6 @@ type Engine struct {
 	snapWG   *sync.WaitGroup // waitgroup for running snapshot compactions
 
 	id           uint64
-	database     string
 	path         string
 	sfile        *tsdb.SeriesFile
 	logger       *zap.Logger // Logger to be used for important messages
@@ -194,7 +193,7 @@ type Engine struct {
 }
 
 // NewEngine returns a new instance of Engine.
-func NewEngine(id uint64, idx tsdb.Index, database, path string, walPath string, sfile *tsdb.SeriesFile, opt tsdb.EngineOptions) tsdb.Engine {
+func NewEngine(id uint64, idx tsdb.Index, path string, walPath string, sfile *tsdb.SeriesFile, opt tsdb.EngineOptions) tsdb.Engine {
 	var wal *WAL
 	if opt.WALEnabled {
 		wal = NewWAL(walPath)
@@ -220,7 +219,6 @@ func NewEngine(id uint64, idx tsdb.Index, database, path string, walPath string,
 	stats := &EngineStatistics{}
 	e := &Engine{
 		id:           id,
-		database:     database,
 		path:         path,
 		index:        idx,
 		sfile:        sfile,
