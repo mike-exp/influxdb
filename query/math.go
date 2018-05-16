@@ -125,7 +125,7 @@ func (v MathValuer) Call(name string, args []interface{}) (interface{}, bool) {
 			}
 			return nil, true
 		case "log2":
-			if arg0, ok := asFloat(args); ok {
+			if arg0, ok := asFloat(arg0); ok {
 				return math.Log2(arg0), true
 			}
 			return nil, true
